@@ -2,7 +2,6 @@ package breeds
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/5aradise/sca-manager/pkg/types"
@@ -21,7 +20,6 @@ func New(apiKey string, reqTimeout time.Duration) (*service, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(breeds)
 	return &service{breeds}, nil
 }
 

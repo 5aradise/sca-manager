@@ -23,3 +23,9 @@ docker-compose up -d db
 ```bash
 make run
 ```
+
+## API Testing with Postman
+1. Open Postman.
+2. Click "Import" and select `postman/sca-manager.postman_collection.json`.
+3. Set environment variables if needed.
+4. Run requests or use the collection in a Postman test runner.
