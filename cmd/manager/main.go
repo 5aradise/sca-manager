@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/5aradise/sca-manager/config"
+	"github.com/5aradise/sca-manager/internal/storage"
 	"github.com/5aradise/sca-manager/pkg/db/postgresql"
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v3"
@@ -39,6 +40,8 @@ func main() {
 		log.Fatal("can't open sql: ", err)
 	}
 	defer conn.Close()
+
+	_ = storage.New(conn)
 
 	// create service
 
