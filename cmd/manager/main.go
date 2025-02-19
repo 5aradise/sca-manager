@@ -10,8 +10,10 @@ import (
 
 	"github.com/5aradise/sca-manager/config"
 	catHandler "github.com/5aradise/sca-manager/internal/controllers/http/cats"
+	missionHandler "github.com/5aradise/sca-manager/internal/controllers/http/missions"
 	breedValidator "github.com/5aradise/sca-manager/internal/services/breeds"
 	catService "github.com/5aradise/sca-manager/internal/services/cats"
+	missionService "github.com/5aradise/sca-manager/internal/services/missions"
 	"github.com/5aradise/sca-manager/internal/storage"
 	"github.com/5aradise/sca-manager/pkg/db/postgresql"
 	"github.com/bytedance/sonic"
@@ -54,6 +56,9 @@ func main() {
 	cs := catService.New(s, bv)
 	ch := catHandler.New(cs)
 
+	ms := missionService.New(s, s)
+	mh := missionHandler.New(ms)
+
 	app := fiber.New(fiber.Config{
 		ReadTimeout: cfg.Server.ReadTimeout,
 		IdleTimeout: cfg.Server.IdleTimeout,
@@ -75,6 +80,9 @@ func main() {
 
 	cats := v1.Group("/cats")
 	ch.Init(cats)
+
+	missions := v1.Group("/missions")
+	mh.Init(missions)
 
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)

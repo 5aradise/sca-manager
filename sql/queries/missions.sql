@@ -14,6 +14,9 @@ FROM missions m
 LEFT JOIN targets t ON m.id = t.mission_id
 ORDER BY m.id;
 
+SELECT * FROM missions
+WHERE cat_id = $1;
+
 UPDATE missions 
 SET cat_id = $2 
 WHERE id = $1

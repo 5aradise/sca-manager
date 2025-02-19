@@ -70,7 +70,7 @@ const updateTargetNotesByIdQuery = `
 UPDATE targets
 SET notes = $2 
 WHERE id = $1
-RETURNING id, mission_id, name, country, notes, is_completed
+RETURNING id, name, country, notes, is_completed
 `
 
 func (q *storage) UpdateTargetNotesById(ctx context.Context, id int32, notes string) (models.Target, error) {

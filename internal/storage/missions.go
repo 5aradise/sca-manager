@@ -38,7 +38,7 @@ LEFT JOIN targets t ON m.id = t.mission_id
 WHERE m.id = $1
 `
 
-func (q *storage) GetMissionByIdQuery(ctx context.Context, id int32) (models.Mission, error) {
+func (q *storage) GetMissionById(ctx context.Context, id int32) (models.Mission, error) {
 	rows, err := q.db.QueryContext(ctx, getMissionByIdQuery, id)
 	if err != nil {
 		return models.Mission{}, err
@@ -47,7 +47,10 @@ func (q *storage) GetMissionByIdQuery(ctx context.Context, id int32) (models.Mis
 	var m models.Mission
 	var catID sql.NullInt32
 	var notes sql.NullString
+
+	var rowCount int
 	for rows.Next() {
+		rowCount++
 		var t models.Target
 		if err := rows.Scan(
 			&m.ID,
@@ -65,6 +68,10 @@ func (q *storage) GetMissionByIdQuery(ctx context.Context, id int32) (models.Mis
 		t.Notes = notes.String
 		m.Targets = append(m.Targets, t)
 	}
+	if rowCount == 0 {
+		return models.Mission{}, sql.ErrNoRows
+	}
+
 	if err := rows.Close(); err != nil {
 		return models.Mission{}, err
 	}
@@ -134,6 +141,24 @@ func (q *storage) ListMissions(ctx context.Context) ([]models.Mission, error) {
 	}
 
 	return ms, nil
+}
+
+const getMissionByCatIdQuery = `
+SELECT id, cat_id, is_completed FROM missions
+WHERE cat_id = $1;
+`
+
+func (q *storage) GetMissionByCatId(ctx context.Context, id int32) (models.Mission, error) {
+	row := q.db.QueryRowContext(ctx, getMissionByCatIdQuery, id)
+	var m models.Mission
+	var catID sql.NullInt32
+	err := row.Scan(
+		&m.ID,
+		&catID,
+		&m.IsCompleted,
+	)
+	m.CatID = catID.Int32
+	return m, err
 }
 
 const updateMissionCatByIdQuery = `
