@@ -9,6 +9,9 @@ import (
 	"syscall"
 
 	"github.com/5aradise/sca-manager/config"
+	catHandler "github.com/5aradise/sca-manager/internal/controllers/http/cats"
+	breedValidator "github.com/5aradise/sca-manager/internal/services/breeds"
+	catService "github.com/5aradise/sca-manager/internal/services/cats"
 	"github.com/5aradise/sca-manager/internal/storage"
 	"github.com/5aradise/sca-manager/pkg/db/postgresql"
 	"github.com/bytedance/sonic"
@@ -41,13 +44,15 @@ func main() {
 	}
 	defer conn.Close()
 
-	_ = storage.New(conn)
+	s := storage.New(conn)
 
-	// create service
+	bv, err := breedValidator.New(cfg.BreedValidator.TheCatApiKey, cfg.BreedValidator.RequestTimeout)
+	if err != nil {
+		log.Fatal("can't init breed validator: ", err)
+	}
 
-	// create router
-
-	// init router
+	cs := catService.New(s, bv)
+	ch := catHandler.New(cs)
 
 	app := fiber.New(fiber.Config{
 		ReadTimeout: cfg.Server.ReadTimeout,
@@ -62,6 +67,14 @@ func main() {
 		ExposeHeaders: []string{"Link"},
 	}))
 	app.Use(logger.New())
+
+	v1 := app.Group("/v1", func(c fiber.Ctx) error {
+		c.Set("Version", "v1")
+		return c.Next()
+	})
+
+	cats := v1.Group("/cats")
+	ch.Init(cats)
 
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)

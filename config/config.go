@@ -9,8 +9,9 @@ import (
 
 type (
 	Config struct {
-		DB     DB
-		Server Server
+		DB             DB
+		Server         Server
+		BreedValidator BreedValidator
 	}
 
 	DB struct {
@@ -25,6 +26,11 @@ type (
 		Port        string        `envconfig:"SERVER_PORT" required:"true"`
 		ReadTimeout time.Duration `envconfig:"SERVER_READ_TIMEOUT" required:"true"`
 		IdleTimeout time.Duration `envconfig:"SERVER_IDLE_TIMEOUT" required:"true"`
+	}
+
+	BreedValidator struct {
+		TheCatApiKey   string        `envconfig:"THE_CAT_API_KEY" required:"true"`
+		RequestTimeout time.Duration `envconfig:"THE_CAT_API_TIMEOUT" required:"true"`
 	}
 )
 
