@@ -70,7 +70,7 @@ func (s *service) AssignCat(ctx context.Context, missionID, catID int32) (models
 	}
 
 	mission, err := s.ms.UpdateMissionCatById(ctx, missionID, catID)
-	if err == nil {
+	if err != nil {
 		return models.Mission{}, err
 	}
 

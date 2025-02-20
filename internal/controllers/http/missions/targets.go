@@ -59,6 +59,13 @@ func (h *handler) UpdateTarget(c fiber.Ctx) error {
 		}
 	}
 
+	if res.ID == 0 {
+		res, err = h.s.GetMission(c.Context(), missionID)
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+		}
+	}
+
 	return c.Status(fiber.StatusOK).JSON(res)
 }
 

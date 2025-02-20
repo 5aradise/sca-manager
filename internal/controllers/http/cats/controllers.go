@@ -45,7 +45,7 @@ func (h *handler) GetCat(c fiber.Ctx) error {
 }
 
 type updateCatSalaryRequest struct {
-	Salary models.Money
+	Salary *models.Money
 }
 
 func (h *handler) UpdateCatSalary(c fiber.Ctx) error {
@@ -59,10 +59,21 @@ func (h *handler) UpdateCatSalary(c fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
-	res, err := h.s.UpdateCatSalary(c.Context(), id, req.Salary)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	var res models.Cat
+	if req.Salary != nil {
+		res, err = h.s.UpdateCatSalary(c.Context(), id, *req.Salary)
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+		}
 	}
+
+	if res.ID == 0 {
+		res, err = h.s.GetCat(c.Context(), id)
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+		}
+	}
+
 	return c.Status(fiber.StatusOK).JSON(res)
 }
 

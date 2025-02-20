@@ -8,7 +8,7 @@ type Mission struct {
 }
 
 type Target struct {
-	ID          int32
+	ID          int32  `json:"-"`
 	Name        string `json:"name"`
 	Country     string `json:"country"`
 	Notes       string `json:"notes,omitempty"`
