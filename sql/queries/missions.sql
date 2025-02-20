@@ -6,13 +6,14 @@ SELECT m.id, m.cat_id, m.is_completed,
     t.id AS target_id, t.name, t.country, t.notes, t.is_completed
 FROM missions m
 LEFT JOIN targets t ON m.id = t.mission_id
-WHERE m.id = $1;
+WHERE m.id = $1
+ORDER BY t.id;
 
 SELECT m.id, m.cat_id, m.is_completed,
        t.id AS target_id, t.name, t.country, t.notes, t.is_completed
 FROM missions m
 LEFT JOIN targets t ON m.id = t.mission_id
-ORDER BY m.id;
+ORDER BY m.id, t.id;
 
 SELECT * FROM missions
 WHERE cat_id = $1;

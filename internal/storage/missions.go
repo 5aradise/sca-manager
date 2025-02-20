@@ -36,6 +36,7 @@ SELECT m.id, m.cat_id, m.is_completed,
 FROM missions m
 LEFT JOIN targets t ON m.id = t.mission_id
 WHERE m.id = $1
+ORDER BY t.id
 `
 
 func (q *storage) GetMissionById(ctx context.Context, id int32) (models.Mission, error) {
@@ -86,7 +87,7 @@ SELECT m.id, m.cat_id, m.is_completed,
        t.id AS target_id, t.name, t.country, t.notes, t.is_completed
 FROM missions m
 LEFT JOIN targets t ON m.id = t.mission_id
-ORDER BY m.id
+ORDER BY m.id, t.id
 `
 
 func (q *storage) ListMissions(ctx context.Context) ([]models.Mission, error) {
