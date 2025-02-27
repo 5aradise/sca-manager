@@ -1,6 +1,37 @@
 # Spy Cat Agency management application
 
-## Local Development
+## Description
+
+Layered CRUD RESTful API for managing spy cats, missions, and targets. Built with Go using Fiber, an PostgreSQL database and logging middleware. Includes integration with TheCatAPI for breed validation, Postman documentation, and Dockerized setup for quick deployment.
+
+## Logic structure
+
+![Logic structure](assets/structure.png)
+
+## Features
+
+- Layered architecture
+- Fully dockerized project
+- API postman documentation
+- Interaction with a third-party api
+
+## Technologies
+
+- Go
+- PostgreSQL
+- Docker
+- Postman
+- Fiber
+- Sonic
+
+## Requirements
+
+- Go 1.23+
+- Docker
+- GNU utils (make)
+- Postman
+
+## Local development
 
 Make sure you're on Go version 1.23+.
 
@@ -24,7 +55,7 @@ docker-compose up -d db
 make run
 ```
 
-## API Testing with Postman
+## API testing with Postman
 1. Open Postman.
 2. Click "Import" and select `postman/sca-manager.postman_collection.json`.
 3. Set environment variables if needed.
