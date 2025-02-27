@@ -2,7 +2,7 @@
 
 ## Description
 
-Layered CRUD RESTful API for managing spy cats, missions, and targets. Built with Go using Fiber, an PostgreSQL database and logging middleware. Includes integration with TheCatAPI for breed validation, Postman documentation, and Dockerized setup for quick deployment.
+Layered CRUD RESTful API for managing spy cats, missions, and targets. Built with Go using Fiber, PostgreSQL database and logging middleware. Includes integration with TheCatAPI for breed validation, Postman documentation and Dockerized setup for quick deployment.
 
 ## Logic structure
 
