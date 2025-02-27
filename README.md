@@ -1,4 +1,4 @@
-# Spy Cat Agency management application
+# Spy Cat Agency management application (DevelopsToday test assessment)
 
 ## Description
 
@@ -56,6 +56,7 @@ make run
 ```
 
 ## API testing with Postman
+
 1. Open Postman.
 2. Click "Import" and select `postman/sca-manager.postman_collection.json`.
 3. Set environment variables if needed.
